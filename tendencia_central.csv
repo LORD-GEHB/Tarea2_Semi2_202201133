@@ -1,0 +1,5 @@
+,Media,Mediana,Moda,Desv_std,Min,Max,CV_%
+temperatura_c,81.42,82.3,75.8,10.59,64.5,96.2,13.0
+presion_psi,39.9,40.35,37.9,5.82,29.8,48.1,14.6
+vibracion_mm_s,2.73,2.3,2.0,2.05,1.4,15.8,75.3
+potencia_kw,14.94,15.65,9.5,3.28,9.5,19.4,21.9

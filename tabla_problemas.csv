@@ -1,0 +1,13 @@
+Problema,Como se detecto,Solucion aplicada,Registros afectados
+Columna 'time stamp' irrelevante y con horas invalidas,Valor casi constante (fecha de ingesta) con minutos > 59 (ej. 18:66:05),Se elimina la columna por no aportar valor analitico,4 horas invalidas; columna completa eliminada
+Placeholders heterogeneos de valores faltantes,"Mezcla de 'null', 'N/A', vacios y ruido 'zzzzzzzz' en varias columnas",Unificacion de todos los placeholders a NaN,1 celdas normalizadas a NaN
+Formato de fecha y anios fuera de rango en 'fecha_hora',Formato D/M/YYYY + anios imposibles 2035 y 2045,Parseo con dayfirst y correccion del anio a 2025 (typo confirmado por secuencia),2 fechas corregidas
+Ruido en identificador de maquina,Aparece 'M04D' en lugar de 'M04' (sufijo espurio),Normalizacion con expresion regular a formato M##,2 registros corregidos
+Valores faltantes en 'maquina_id' (columna clave),Celdas vacias en el identificador de maquina,"Imputacion por contexto: si las filas vecinas coinciden, se hereda su maquina",2 registros imputados
+Outliers extremos y valores fuera de rango fisico,"Centinelas (999, 999.9, 99.9, -99.9), negativos y extremos (1e7, -5.5e6, 0.0001)","Validacion por rango fisico; valores invalidos -> NaN. Detalle: {'temperatura_c': 6, 'presion_psi': 3, 'vibracion_mm_s': 5, 'potencia_kw': 3}",17 lecturas invalidadas
+Filas sin ninguna lectura de sensor valida,Las 4 variables de sensor quedaron en NaN tras la validacion de rango,Eliminacion de la fila (sin senal recuperable),2 filas eliminadas
+Valores faltantes en lecturas de sensores,NaN remanentes en temperatura/presion/vibracion/potencia,Imputacion con la MEDIANA POR MAQUINA (respeta la linea base de cada equipo),"Imputados por columna: {'temperatura_c': 5, 'presion_psi': 1, 'vibracion_mm_s': 3, 'potencia_kw': 1}"
+Formato inconsistente en 'lote_produccion',"Separadores variados: 'LOTx001', 'LOT/001' frente al estandar 'LOT-001'",Normalizacion con regex a 'LOT-###'; faltantes -> 'DESCONOCIDO',3 lotes reformateados
+Ruido / faltantes en 'tecnico_responsable',"Valores 'zzzzzzzz', 'N/A' y celdas vacias",Etiquetado uniforme como 'Desconocido',2 registros etiquetados
+Categorias inconsistentes en 'inspectedby' / 'estado_operativo',Mayusculas/minusculas mezcladas y un vacio en 'inspectedby',Estandarizacion de mayusculas/minusculas; faltante de inspectedby -> 'auto',Toda la columna normalizada
+Duplicados exactos y semanticos,"Chequeo de filas identicas y de (maquina_id, fecha_hora al minuto)",Se eliminan duplicados si existen; cadencia de muestreo ~22-25 min,Exactos: 0 | Semanticos: 0 (ninguno real)
